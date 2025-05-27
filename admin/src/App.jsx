@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Sidebar from './components/Sidebar'
 import { Route, Routes } from 'react-router-dom'
 import Add from './pages/Add'
@@ -12,7 +12,12 @@ export const backend_url = import.meta.env.VITE_BACKEND_URL
 export const currency = "$"
 
 function App() {
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : "")
+
+  useEffect(()=>{
+    localStorage.setItem('token', token)
+  }, [token])
+
   return (
     <main>
       <ToastContainer/>

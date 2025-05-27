@@ -67,8 +67,9 @@ const handleUserRegister = async (req, res)=>{
 //Controller function to handle admin login
 const handleAdminLogin = async (req, res)=>{
     try {
-        const {email, password} = req.body
-        if(email === process.env.ADMIN_EMAİL && password === process.env.ADMIN_PASS){
+        const {email, password} = req.body;
+
+        if( email.trim() === process.env.ADMIN_EMAIL.trim() && password.trim() === process.env.ADMIN_PASS.trim()){
             const token = jwt.sign(email + password, process.env.JWT_SECRET)
             res.json({success:true, token})
         }else{

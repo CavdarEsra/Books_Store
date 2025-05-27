@@ -4,8 +4,9 @@ import {TbTrash} from "react-icons/tb"
 import {FaPlus} from "react-icons/fa6"
 import axios from "axios"
 import { backend_url } from '../App'
+import { toast } from 'react-toastify'
 
-function Add() {
+function Add({token}) {
 
   const [image, setImage] = useState(null)
   const [name, setName] = useState('')
@@ -17,8 +18,34 @@ function Add() {
   const handleChangeImage = (e) =>{
     setImage(e.target.files[0])
   }
-  const onSubmitHandler = async ()=>{
-    
+  const onSubmitHandler = async (e)=>{
+    e.preventDefault()
+    try {
+      const formData = new FormData()
+      formData.append("name", name)
+      formData.append("description", description)
+      formData.append("price", price)
+      formData.append("category", category)
+      formData.append("popular", popular)
+      formData.append("image", image)
+      
+      const response = await axios.post(`${backend_url}/api/product/create`, formData, {headers: {token}})
+      if(response.data.success){
+        toast.success(response.data.message)
+        setName('')
+        setDescription('')
+        setDescription('')
+        setPrice('')
+        setImage(null)
+        setPopular(false)
+      }else{
+        toast.error(response.data.message)
+      }
+
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
   }
 
   return (
@@ -30,7 +57,7 @@ function Add() {
         </div>
         <div className='w-full'>
           <h5 className='h5'>Product description</h5>
-          <textarea onChange={(e)=> setDescription(e.target.value)} value={description} type="text" placeholder='Write here...' className='px-3 py-1.5 ring-1 ring-slate-900/10 rounded bg-white mt-1 w-full max-w-lg'/>
+          <textarea onChange={(e)=> setDescription(e.target.value)} value={description} type="text" rows={5} placeholder='Write here...' className='px-3 py-1.5 ring-1 ring-slate-900/10 rounded bg-white mt-1 w-full max-w-lg'/>
         </div>
         <div className='flex items-end gap-x-6'>
           {/* categories */}
@@ -57,7 +84,7 @@ function Add() {
           <input onChange={(e)=> setPrice(e.target.value)} value={price} type="number" placeholder='Price' min={0} className='px-3 py-1.5 ring-1 ring-slate-900/10 rounded bg-white w-20'/>
         </div>
         <div className='flexStart gap-2 my-2'>
-          <input onChange={()=>setPopular((prev)=> !prev)} type="checkbox" checked={popular} id='popular'/>
+          <input onChange={(e)=>setPopular((prev)=> !prev)} type="checkbox" checked={popular} id='popular'/>
           <label htmlFor="popular" className='cursor-pointer'>Add to popular</label>
         </div>
         <button type='submit' className='btn-dark mt-3 max-w-44 sm:w-full'>Add Product</button>
