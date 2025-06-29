@@ -9,6 +9,7 @@ function PopularBooks() {
   const [popularBooks, setPopularBooks] = useState([])
 
   useEffect(()=>{
+    console.log("books:", books);
     const data = books.filter(item => item.popular)
     setPopularBooks(data.slice(0,5))
   },[books])

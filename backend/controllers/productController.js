@@ -19,7 +19,7 @@ const createProduct = async (req,res) =>{
             description,
             category,
             price : Number(price),
-            popular : popular === "type" ? true : false,
+            popular : String(popular) === "true",
             image : imageUrl,
             date : Date.now()
         }

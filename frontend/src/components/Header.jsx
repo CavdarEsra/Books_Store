@@ -10,13 +10,21 @@ import { ShopContext } from '../context/ShopContext'
 
 function Header() {
 
-  const {navigate, token, setToken, getCartCount} = useContext(ShopContext)
+  const {navigate, token, setToken, getCartCount, setCartItems} = useContext(ShopContext)
   const [active, setActive] = useState(false)
   const [menuOpened, setMenuOpened] = useState(false)
   
   const toggleMenu = () => {
     setMenuOpened((prev)=> !prev)
   }
+
+  const logout = ()=>{
+    navigate('/login')
+    localStorage.removeItem('token')
+    setToken('')
+    setCartItems({})
+  }
+
   useEffect(()=>{
     const handleScroll = () => {
       if(window.scrollY > 0){
@@ -65,9 +73,9 @@ function Header() {
               )}
             </div>
             {token && <>
-              <ul className='bg-white p-1 w-32 ring-1 ring-slate-900/5 rounded absolute right-0 top-10 flex flex-col regular-14 shadow-md hidden group-hover:flex'>
-                <li className='p2 text-tertiary rounded-md hover:bg-primary cursor-pointer'>Orders</li>
-                <li className='p2 text-tertiary rounded-md hover:bg-primary cursor-pointer'>Logout</li>
+              <ul className='bg-white p-1 w-32 ring-1 ring-slate-900/5 rounded absolute right-0 top-7 flex flex-col regular-14 shadow-md hidden group-hover:flex'>
+                <li onClick={()=> navigate('/orders')} className='p-2 text-tertiary rounded-md hover:bg-primary cursor-pointer'>Orders</li>
+                <li onClick={logout} className='p-2 text-tertiary rounded-md hover:bg-primary cursor-pointer'>Logout</li>
               </ul>
             </>}
           </div>

@@ -7,11 +7,14 @@ import Contact from './pages/Contact'
 import Cart from './pages/Cart'
 import Login from './pages/Login'
 import PlaceOrder from './pages/PlaceOrder'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
   return (
     <main className='overflow-hidden bg-primary'>
+      <ToastContainer/>
       <Header/>
       <Routes>
         <Route path='/' element={<Home/>}/>
